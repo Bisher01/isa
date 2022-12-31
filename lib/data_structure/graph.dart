@@ -38,11 +38,38 @@ class Vertex {
         consumedTime == vertex.consumedTime &&
         vertexName == vertex.vertexName;
   }
+
+  Vertex copyWith({
+    final int? index,
+    final String? vertexName,
+    final double? busWaitingTime,
+    final double? taxiWaitingTime,
+    final double? currentHealth,
+    final double? currentMoney,
+    final double? consumedTime,
+  }) {
+    return Vertex(
+      index: index ?? this.index,
+      vertexName: vertexName ?? this.vertexName,
+      busWaitingTime: busWaitingTime ?? this.busWaitingTime,
+      taxiWaitingTime: taxiWaitingTime ?? this.taxiWaitingTime,
+      currentHealth: currentHealth ?? this.currentHealth,
+      currentMoney: currentMoney ?? this.currentMoney,
+      consumedTime: consumedTime ?? this.consumedTime,
+    );
+  }
 }
 
 class Edge {
-  const Edge(this.source, this.destination, this.distance, this.busSpeed,
-      this.taxiSpeed, this.busStationName, this.type);
+  const Edge({
+    required this.source,
+    required this.destination,
+    required this.distance,
+    required this.busSpeed,
+    required this.taxiSpeed,
+    required this.busStationName,
+    required this.type,
+  });
 
   final Vertex source;
   final Vertex destination;
@@ -56,11 +83,32 @@ class Edge {
   final double walkingSpeed = 5.5;
   final String? busStationName;
   final Transportation type;
+
+  Edge copyWith({
+    final Vertex? source,
+    final Vertex? destination,
+    final double? distance,
+    final double? busSpeed,
+    final double? taxiSpeed,
+    final double? walkingSpeed,
+    final String? busStationName,
+    final Transportation? type,
+  }) {
+    return Edge(
+      source: source ?? this.source,
+      destination: destination ?? this.destination,
+      distance: distance ?? this.distance,
+      busSpeed: busSpeed ?? this.busSpeed,
+      taxiSpeed: taxiSpeed ?? this.taxiSpeed,
+      busStationName: busStationName ?? this.busStationName,
+      type: type ?? this.type,
+    );
+  }
 }
 
 enum EdgeType { directed, undirected }
 
-enum Transportation { bus, walk, taxi }
+enum Transportation { bus, walk, taxi, none }
 
 abstract class Graph {
   Iterable<Vertex> get vertices;
@@ -94,12 +142,12 @@ abstract class Graph {
 }
 
 class AdjacencyList implements Graph {
-  final Map<Vertex, List<Edge>> _connections = {};
-  var _nextIndex = 0;
-  AdjacencyList();
+  Map<Vertex, List<Edge>> connections;
+  int nextIndex;
+  AdjacencyList({required this.connections, this.nextIndex = 0});
 
   @override
-  Iterable<Vertex> get vertices => _connections.keys;
+  Iterable<Vertex> get vertices => connections.keys;
 
   @override
   Vertex createVertex(
@@ -111,7 +159,7 @@ class AdjacencyList implements Graph {
     double consumedTime,
   ) {
     final vertex = Vertex(
-      index: _nextIndex,
+      index: nextIndex,
       vertexName: vertexName,
       busWaitingTime: busWaitingTime,
       taxiWaitingTime: taxiWaitingTime,
@@ -119,8 +167,8 @@ class AdjacencyList implements Graph {
       currentMoney: currentMoney,
       consumedTime: consumedTime,
     );
-    _nextIndex++;
-    _connections[vertex] = [];
+    nextIndex++;
+    connections[vertex] = [];
     return vertex;
   }
 
@@ -134,15 +182,15 @@ class AdjacencyList implements Graph {
     String? busStationName,
     Transportation type,
   ) {
-    _connections[source]?.add(
+    connections[source]?.add(
       Edge(
-        source,
-        destination,
-        distance,
-        busSpeed,
-        taxiSpeed,
-        busStationName,
-        type,
+        source: source,
+        destination: destination,
+        distance: distance,
+        busSpeed: busSpeed,
+        taxiSpeed: taxiSpeed,
+        busStationName: busStationName,
+        type: type,
       ),
     );
     // if (edgeType == EdgeType.undirected) {
@@ -153,13 +201,13 @@ class AdjacencyList implements Graph {
 
   @override
   List<Edge> edges(Vertex source) {
-    return _connections[source] ?? [];
+    return connections[source] ?? [];
   }
 
   @override
   String toString() {
     final result = StringBuffer();
-    _connections.forEach((vertex, edges) {
+    connections.forEach((vertex, edges) {
       final destinations = edges.map((edge) {
         return edge.destination;
       }).join(', ');

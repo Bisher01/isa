@@ -3,13 +3,32 @@ import 'package:isa/data_structure/graph.dart';
 class State {
   final int initHealth;
   final int initMoney;
+  List<String> path;
+  final AdjacencyList graph;
+  final List<Vertex> availableMoves;
   State({
     required this.initHealth,
     required this.initMoney,
+    required this.path,
+    required this.graph,
+    required this.availableMoves,
   });
 
-  List<String> path = [];
-  final graph = AdjacencyList();
+  State copyWith({
+    int? initHealth,
+    int? initMoney,
+    List<String>? path,
+    AdjacencyList? graph,
+    List<Vertex>? availableMoves,
+  }) {
+    return State(
+      initHealth: initHealth ?? this.initHealth,
+      initMoney: initMoney ?? this.initMoney,
+      path: path ?? this.path,
+      graph: graph ?? this.graph,
+      availableMoves: availableMoves ?? this.availableMoves,
+    );
+  }
 
   double getMoneyConsume(Edge edge) {
     double moneyConsume = 0;
@@ -21,7 +40,7 @@ class State {
       } else {
         moneyConsume = 400;
       }
-    } else {
+    } else if (edge.type == Transportation.taxi) {
       moneyConsume = edge.distance * 1000;
     }
     return moneyConsume;
@@ -33,7 +52,7 @@ class State {
       healthConsume = edge.distance * 10;
     } else if (edge.type == Transportation.bus) {
       healthConsume = edge.distance * 5;
-    } else {
+    } else if (edge.type == Transportation.taxi) {
       healthConsume = edge.distance * 10 * -1;
     }
     return healthConsume;
@@ -46,7 +65,7 @@ class State {
     } else if (edge.type == Transportation.bus) {
       timeConsume =
           edge.source.busWaitingTime + (edge.distance * edge.busSpeed);
-    } else {
+    } else if (edge.type == Transportation.taxi) {
       timeConsume =
           edge.source.taxiWaitingTime + (edge.distance * edge.taxiSpeed);
     }
@@ -58,6 +77,19 @@ class State {
       return true;
     }
     return false;
+  }
+
+  move(Edge edge) {
+      double health = getHealthConsume(edge);
+      double money = getMoneyConsume(edge);
+      double time = getTimeConsume(edge);
+      edge.copyWith(
+        destination: edge.destination.copyWith(
+          currentHealth: edge.destination.currentHealth - health,
+          currentMoney: edge.destination.currentMoney - money,
+          consumedTime: edge.destination.consumedTime + time,
+        ),
+      );
   }
 
   bool checkAvailableVertex() {
