@@ -10,7 +10,6 @@ class Vertex {
     this.currentHealth = 0,
     this.currentMoney = 0,
     this.consumedTime = 0,
-    required this.isSameBus,
   });
 
   final int index;
@@ -24,7 +23,6 @@ class Vertex {
   final double currentHealth;
   final double currentMoney;
   final double consumedTime;
-  final bool isSameBus;
 
   @override
   String toString() =>
@@ -74,7 +72,6 @@ abstract class Graph {
     double currentHealth,
     double currentMoney,
     double consumedTime,
-    bool isSameBus,
   );
 
   void addEdge(
@@ -112,7 +109,6 @@ class AdjacencyList implements Graph {
     double currentHealth,
     double currentMoney,
     double consumedTime,
-    bool isSameBus,
   ) {
     final vertex = Vertex(
       index: _nextIndex,
@@ -122,7 +118,6 @@ class AdjacencyList implements Graph {
       currentHealth: currentHealth,
       currentMoney: currentMoney,
       consumedTime: consumedTime,
-      isSameBus: isSameBus,
     );
     _nextIndex++;
     _connections[vertex] = [];

@@ -16,7 +16,7 @@ class State {
     if (edge.type == Transportation.walk) {
       moneyConsume = 0;
     } else if (edge.type == Transportation.bus) {
-      if (edge.destination.isSameBus) {
+      if (edge.source.vertexName == edge.destination.vertexName) {
         moneyConsume = 0;
       } else {
         moneyConsume = 400;
