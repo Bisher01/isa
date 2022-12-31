@@ -60,6 +60,10 @@ class State {
     return false;
   }
 
+  bool checkAvailableVertex() {
+    return false;
+  }
+
   List<Vertex> checkMoves() {
     List<Vertex> availableMoves = [];
 
