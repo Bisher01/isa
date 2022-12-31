@@ -59,6 +59,12 @@ class State {
     }
     return false;
   }
+
+  List<Vertex> checkMoves() {
+    List<Vertex> availableMoves = [];
+
+    return availableMoves;
+  }
   // get next state
   // check moves
   // A *
