@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:isa/data_structure/graph.dart';
 
 class State {
@@ -5,7 +7,7 @@ class State {
   final int initMoney;
   List<String> path;
   final AdjacencyList graph;
-  final List<Vertex> availableMoves;
+  final List<Edge> availableMoves;
   State({
     required this.initHealth,
     required this.initMoney,
@@ -19,7 +21,7 @@ class State {
     int? initMoney,
     List<String>? path,
     AdjacencyList? graph,
-    List<Vertex>? availableMoves,
+    List<Edge>? availableMoves,
   }) {
     return State(
       initHealth: initHealth ?? this.initHealth,
@@ -79,27 +81,62 @@ class State {
     return false;
   }
 
-  move(Edge edge) {
-      double health = getHealthConsume(edge);
-      double money = getMoneyConsume(edge);
-      double time = getTimeConsume(edge);
-      edge.copyWith(
-        destination: edge.destination.copyWith(
-          currentHealth: edge.destination.currentHealth - health,
-          currentMoney: edge.destination.currentMoney - money,
-          consumedTime: edge.destination.consumedTime + time,
-        ),
-      );
+  void printState() {
+    //print the structure attributes values
+    stdout.write("path: ");
+    for (var element in path) {
+      if (element == path.last) {
+        stdout.write("$element\n");
+      } else {
+        stdout.write("$element -> ");
+      }
+    }
   }
 
-  bool checkAvailableVertex() {
-    return false;
-  }
-
-  List<Vertex> checkMoves() {
-    List<Vertex> availableMoves = [];
-
+  List<Edge> checkMoves() {
+    // test
+    // I'm test please delete me :)
+    Vertex currentVertex = const Vertex(
+      index: 1,
+      vertexName: "test",
+      busWaitingTime: 50.0,
+      taxiWaitingTime: 30.0,
+    );
+    //end test
+    List<Edge> availableMoves = [];
+    List<Edge> moves = graph.edges(currentVertex);
+    for (Edge edge in moves) {
+      double health = currentVertex.currentHealth - getHealthConsume(edge);
+      double money = currentVertex.currentMoney - getMoneyConsume(edge);
+      if (money > 0 && health > 0) {
+        availableMoves.add(edge);
+      }
+    }
     return availableMoves;
+  }
+
+  List<State> getNextState() {
+    List<State> nextState = <State>[];
+    availableMoves.addAll(checkMoves());
+    for (var edges in availableMoves) {
+      State state = copyWith();
+      state.move(edges);
+      nextState.add(state);
+    }
+    return nextState;
+  }
+
+  void move(Edge edge) {
+    double health = getHealthConsume(edge);
+    double money = getMoneyConsume(edge);
+    double time = getTimeConsume(edge);
+    edge.copyWith(
+      destination: edge.destination.copyWith(
+        currentHealth: edge.destination.currentHealth - health,
+        currentMoney: edge.destination.currentMoney - money,
+        consumedTime: edge.destination.consumedTime + time,
+      ),
+    );
   }
   // get next state
   // check moves
