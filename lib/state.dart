@@ -16,7 +16,11 @@ class State {
     if (edge.type == Transportation.walk) {
       moneyConsume = 0;
     } else if (edge.type == Transportation.bus) {
-      moneyConsume = 400;
+      if (edge.destination.isSameBus) {
+        moneyConsume = 0;
+      } else {
+        moneyConsume = 400;
+      }
     } else {
       moneyConsume = edge.distance * 1000;
     }
