@@ -8,12 +8,14 @@ class State {
   List<String> path;
   final AdjacencyList graph;
   final List<Edge> availableMoves;
+  final Vertex currentVertex;
   State({
     required this.initHealth,
     required this.initMoney,
     required this.path,
     required this.graph,
     required this.availableMoves,
+    required this.currentVertex,
   });
 
   State copyWith({
@@ -22,6 +24,7 @@ class State {
     List<String>? path,
     AdjacencyList? graph,
     List<Edge>? availableMoves,
+    Vertex? currentVertex,
   }) {
     return State(
       initHealth: initHealth ?? this.initHealth,
@@ -29,6 +32,7 @@ class State {
       path: path ?? this.path,
       graph: graph ?? this.graph,
       availableMoves: availableMoves ?? this.availableMoves,
+      currentVertex: currentVertex ?? this.currentVertex,
     );
   }
 
@@ -94,15 +98,6 @@ class State {
   }
 
   List<Edge> checkMoves() {
-    // test
-    // I'm test please delete me :)
-    Vertex currentVertex = const Vertex(
-      index: 1,
-      vertexName: "test",
-      busWaitingTime: 50.0,
-      taxiWaitingTime: 30.0,
-    );
-    //end test
     List<Edge> availableMoves = [];
     List<Edge> moves = graph.edges(currentVertex);
     for (Edge edge in moves) {
