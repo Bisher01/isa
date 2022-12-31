@@ -7,14 +7,18 @@ class Vertex {
     required this.vertexName,
     required this.busWaitingTime,
     required this.taxiWaitingTime,
-    required this.currentHealth,
-    required this.currentMoney,
-    required this.consumedTime,
+    this.currentHealth = 0,
+    this.currentMoney = 0,
+    this.consumedTime = 0,
   });
 
   final int index;
+  // if the vertexName== 'home' then
+  // we have arrived at our destination
   final String vertexName;
+  // in seconds
   final double busWaitingTime;
+  // in seconds
   final double taxiWaitingTime;
   final double currentHealth;
   final double currentMoney;
@@ -42,9 +46,14 @@ class Edge {
 
   final Vertex source;
   final Vertex destination;
+  // in kilometers
   final double distance;
+  // in Km/h
   final double busSpeed;
+  // in Km/h
   final double taxiSpeed;
+  // in Km/h
+  final double walkingSpeed = 5.5;
   final String? busStationName;
   final Transportation type;
 }
