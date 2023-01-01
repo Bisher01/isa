@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:isa/map/map.dart';
 
 void main() {
+  RoadMap roadMap = RoadMap();
+  roadMap.getGraph();
   runApp(const MyApp());
 }
 

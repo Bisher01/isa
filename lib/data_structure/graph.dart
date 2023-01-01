@@ -26,7 +26,7 @@ class Vertex {
 
   @override
   String toString() =>
-      "Vertex(Current Health: $currentHealth, Current Money: $currentMoney, Consumed Time: $consumedTime)";
+      "$index $vertexName (Current Health: $currentHealth, Current Money: $currentMoney, Consumed Time: $consumedTime)";
 
   String getPath() => "Station(num: $index, Station Name: $vertexName)";
 

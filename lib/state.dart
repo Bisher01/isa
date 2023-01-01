@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:isa/data_structure/graph.dart';
-
+// you are idiot
+// and i will judge you
 class State {
   final int initHealth;
   final int initMoney;

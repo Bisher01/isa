@@ -29,5 +29,7 @@ class RoadMap {
         'mhajreen sena3a', Transportation.none);
     Edge MalkiHome = graph.addEdge(malki, home, 7, 110, 70,
         'mhajreen sena3a', Transportation.none);
+
+    print(graph);
   }
 }
