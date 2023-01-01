@@ -191,9 +191,7 @@ class AdjacencyList implements Graph {
       busStationName: busStationName,
       type: type,
     );
-    connections[source]?.add(
-       edge
-    );
+    connections[source]?.add(edge);
     return edge;
     // if (edgeType == EdgeType.undirected) {
     //   _connections[destination]?.add(
