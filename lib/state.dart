@@ -18,6 +18,8 @@ class State {
     required this.currentVertex,
   });
 
+  // graph.addEdge(source, destination, distance, busSpeed, taxiSpeed, busStationName, type);
+  // graph.createVertex(vertexName, busWaitingTime, taxiWaitingTime, currentHealth, currentMoney, consumedTime);
   State copyWith({
     int? initHealth,
     int? initMoney,
