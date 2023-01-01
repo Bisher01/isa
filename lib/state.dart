@@ -41,6 +41,7 @@ class State {
     if (edge.type == Transportation.walk) {
       moneyConsume = 0;
     } else if (edge.type == Transportation.bus) {
+      ///TODO: vertex name or bus station name
       if (edge.source.vertexName == edge.destination.vertexName) {
         moneyConsume = 0;
       } else {
@@ -133,8 +134,6 @@ class State {
       ),
     );
   }
-  // get next state
-  // check moves
   // A *
   // heuristics
 }
