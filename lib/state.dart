@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:isa/data_structure/graph.dart';
 
 class State {

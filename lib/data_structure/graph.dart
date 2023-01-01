@@ -116,11 +116,11 @@ abstract class Graph {
   Vertex createVertex(
     String vertexName,
     double busWaitingTime,
-    double taxiWaitingTime,
+    double taxiWaitingTime, {
     double currentHealth,
     double currentMoney,
     double consumedTime,
-  );
+  });
 
   void addEdge(
     Vertex source,
@@ -153,11 +153,11 @@ class AdjacencyList implements Graph {
   Vertex createVertex(
     String vertexName,
     double busWaitingTime,
-    double taxiWaitingTime,
-    double currentHealth,
-    double currentMoney,
-    double consumedTime,
-  ) {
+    double taxiWaitingTime, {
+    double currentHealth = 0,
+    double currentMoney = 0,
+    double consumedTime = 0,
+  }) {
     final vertex = Vertex(
       index: nextIndex,
       vertexName: vertexName,
@@ -173,7 +173,7 @@ class AdjacencyList implements Graph {
   }
 
   @override
-  void addEdge(
+  Edge addEdge(
     Vertex source,
     Vertex destination,
     double distance,
@@ -182,17 +182,19 @@ class AdjacencyList implements Graph {
     String? busStationName,
     Transportation type,
   ) {
-    connections[source]?.add(
-      Edge(
-        source: source,
-        destination: destination,
-        distance: distance,
-        busSpeed: busSpeed,
-        taxiSpeed: taxiSpeed,
-        busStationName: busStationName,
-        type: type,
-      ),
+    final edge = Edge(
+      source: source,
+      destination: destination,
+      distance: distance,
+      busSpeed: busSpeed,
+      taxiSpeed: taxiSpeed,
+      busStationName: busStationName,
+      type: type,
     );
+    connections[source]?.add(
+       edge
+    );
+    return edge;
     // if (edgeType == EdgeType.undirected) {
     //   _connections[destination]?.add(
     //     Edge(destination, source, weight),
