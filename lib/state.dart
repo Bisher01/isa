@@ -13,12 +13,12 @@ class State {
   final Vertex currentVertex;
   final Edge? previousEdge; //null
   State({
-    required this.currentHealth, //100
-    required this.currentMoney, //20000
-    required this.path, //[]
-    required this.graph, // roadMap
-    required this.currentVertex, //collage
-    required this.previousEdge, // null
+    required this.currentHealth,
+    required this.currentMoney,
+    required this.path,
+    required this.graph,
+    required this.currentVertex,
+    required this.previousEdge,
   });
 
   // graph.addEdge(source, destination, distance, busSpeed, taxiSpeed, busStationName, type);
@@ -40,6 +40,7 @@ class State {
       previousEdge: previousEdge ?? this.previousEdge,
     );
   }
+
   ///TODO: edit the function
   double getMoneyConsume(Edge edge, Transportation type) {
     double moneyConsume = 0;
@@ -56,6 +57,7 @@ class State {
     }
     return moneyConsume;
   }
+
   ///TODO: edit the function
   double getHealthConsume(Edge edge, Transportation type) {
     double healthConsume = 0;
@@ -68,6 +70,7 @@ class State {
     }
     return healthConsume;
   }
+
   ///TODO: edit the function
   double getTimeConsume(Edge edge, Transportation type) {
     double timeConsume = 0;
