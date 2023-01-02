@@ -41,7 +41,6 @@ class State {
     );
   }
 
-  ///TODO: edit the function
   double getMoneyConsume(Edge edge, Transportation type) {
     double moneyConsume = 0;
     if (edge.type == Transportation.walk) {
@@ -58,7 +57,6 @@ class State {
     return moneyConsume;
   }
 
-  ///TODO: edit the function
   double getHealthConsume(Edge edge, Transportation type) {
     double healthConsume = 0;
     if (edge.type == Transportation.walk) {
@@ -71,17 +69,17 @@ class State {
     return healthConsume;
   }
 
-  ///TODO: edit the function
   double getTimeConsume(Edge edge, Transportation type) {
+    // in seconds
     double timeConsume = 0;
     if (edge.type == Transportation.walk) {
-      timeConsume = edge.distance * edge.walkingSpeed;
+      timeConsume = edge.distance * edge.walkingSpeed * 3600;
     } else if (edge.type == Transportation.bus) {
       timeConsume =
-          edge.source.busWaitingTime + (edge.distance * edge.busSpeed);
+          edge.source.busWaitingTime + (edge.distance * edge.busSpeed * 3600);
     } else if (edge.type == Transportation.taxi) {
       timeConsume =
-          edge.source.taxiWaitingTime + (edge.distance * edge.taxiSpeed);
+          edge.source.taxiWaitingTime + (edge.distance * edge.taxiSpeed * 3600);
     }
     return timeConsume;
   }
