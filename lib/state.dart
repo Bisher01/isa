@@ -43,15 +43,15 @@ class State {
 
   double getMoneyConsume(Edge edge, Transportation type) {
     double moneyConsume = 0;
-    if (edge.type == Transportation.walk) {
+    if (type == Transportation.walk) {
       moneyConsume = 0;
-    } else if (edge.type == Transportation.bus) {
+    } else if (type == Transportation.bus) {
       if (edge.busStationName == previousEdge?.busStationName) {
         moneyConsume = 0;
       } else {
         moneyConsume = 400;
       }
-    } else if (edge.type == Transportation.taxi) {
+    } else if (type == Transportation.taxi) {
       moneyConsume = edge.distance * 1000;
     }
     return moneyConsume;
@@ -59,11 +59,11 @@ class State {
 
   double getHealthConsume(Edge edge, Transportation type) {
     double healthConsume = 0;
-    if (edge.type == Transportation.walk) {
+    if (type == Transportation.walk) {
       healthConsume = edge.distance * 10;
-    } else if (edge.type == Transportation.bus) {
+    } else if (type == Transportation.bus) {
       healthConsume = edge.distance * 5;
-    } else if (edge.type == Transportation.taxi) {
+    } else if (type == Transportation.taxi) {
       healthConsume = edge.distance * 10 * -1;
     }
     return healthConsume;
@@ -72,14 +72,14 @@ class State {
   double getTimeConsume(Edge edge, Transportation type) {
     // in seconds
     double timeConsume = 0;
-    if (edge.type == Transportation.walk) {
-      timeConsume = edge.distance * edge.walkingSpeed * 3600;
-    } else if (edge.type == Transportation.bus) {
+    if (type == Transportation.walk) {
+      timeConsume = (edge.distance /edge.walkingSpeed) * 3600;
+    } else if (type == Transportation.bus) {
       timeConsume =
-          edge.source.busWaitingTime + (edge.distance * edge.busSpeed * 3600);
-    } else if (edge.type == Transportation.taxi) {
+          edge.source.busWaitingTime +( (edge.distance / edge.busSpeed) * 3600);
+    } else if (type == Transportation.taxi) {
       timeConsume =
-          edge.source.taxiWaitingTime + (edge.distance * edge.taxiSpeed * 3600);
+          edge.source.taxiWaitingTime + ((edge.distance / edge.taxiSpeed) * 3600);
     }
     return timeConsume;
   }
