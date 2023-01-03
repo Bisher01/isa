@@ -5,7 +5,7 @@ class heuristics {
   void mainfun() {
     RoadMap map = RoadMap();
     AdjacencyList a = map.getGraph();
-          // print(a.connections.);
+           print(a.connections.toString());
 
     a.connections.forEach((key, value) {
       // print(value.toString());
