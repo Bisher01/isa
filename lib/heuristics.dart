@@ -5,14 +5,18 @@ class heuristics {
   void mainfun() {
     RoadMap map = RoadMap();
     AdjacencyList a = map.getGraph();
+    var n = 1;
     a.connections.forEach((key, value) {
       value.forEach((element) {
-   if(element){
+        if (element.destination.vertexName == 'home') {
+          key.heuristic = 1;
+        }
+      });
 
-      }
-       });
-   
-   
+      // print(value.toString());
+      // value.forEach((element) {
+      //   if (element) {}
+      // });
     });
   }
 }

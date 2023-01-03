@@ -104,6 +104,11 @@ class Edge {
       type: type ?? this.type,
     );
   }
+
+  @override
+  String toString() {
+    return 'Edge{source: $source, destination: $destination, distance: $distance, busSpeed: $busSpeed, taxiSpeed: $taxiSpeed, walkingSpeed: $walkingSpeed, busStationName: $busStationName, type: $type}';
+  }
 }
 
 enum EdgeType { directed, undirected }
