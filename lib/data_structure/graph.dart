@@ -70,6 +70,7 @@ class Edge {
     required this.busStationName,
     required this.type,
   });
+  
 
   final Vertex source;
   final Vertex destination;
