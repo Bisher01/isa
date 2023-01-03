@@ -5,13 +5,13 @@ class heuristics {
   void mainfun() {
     RoadMap map = RoadMap();
     AdjacencyList a = map.getGraph();
-          // print(a.connections.);
-
     a.connections.forEach((key, value) {
-      // print(value.toString());
-      // if(){
+      value.forEach((element) {
+   if(element){
 
-      // }
+      }
+       });
+   
    
     });
   }
