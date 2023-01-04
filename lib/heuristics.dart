@@ -5,9 +5,9 @@ import 'package:isa/map/map.dart';
 import 'package:isa/state.dart';
 
 class Heuristics {
-  final int currentHealth;
-  final int currentMoney;
-  final int consumedTime;
+  final double currentHealth;
+  final double currentMoney;
+  final double consumedTime;
   List<String> path;
   final AdjacencyList graph;
   final List<Edge> availableMoves = [];
@@ -26,7 +26,7 @@ class Heuristics {
     this.type,
   );
 
-  void mainfun() {
+  void mainFun() {
     State cost = State(
       currentHealth: currentHealth,
       currentMoney: currentMoney,
@@ -43,45 +43,47 @@ class Heuristics {
     AdjacencyList edges = AdjacencyList(connections: {});
     QueueList queue = QueueList();
 
-    a.connections.forEach((key, value) {
-      PriorityQueue vertixQueue =
-          PriorityQueue(elements: [], priority: Priority.min);
-      value.forEach((element) {
-        if (element.destination.vertexName == 'home') {
-          h = cost.getTimeConsume(element, type);
-          vertixQueue.enqueue(h);
+    a.connections.forEach(
+      (key, value) {
+        PriorityQueue vertexQueue =
+            PriorityQueue(elements: [], priority: Priority.min);
+        for (var element in value) {
+          if (element.destination.vertexName == 'home') {
+            h = cost.getTimeConsume(element, type);
+            vertexQueue.enqueue(h);
+          }
         }
-      });
 
-      queue.enqueue(key);
-      while (!queue.isEmpty) {
-        Vertex node = queue.dequeue();
-        List<Edge> childrenedges = edges.edges(node);
-        childrenedges.forEach((childrenedge) {
-          childrenedge.destination.parent = node;
-          queue.enqueue(childrenedge.destination);
-          List<Edge> childrenEdgesForChild =
-              edges.edges(childrenedge.destination);
-          childrenEdgesForChild.forEach((childrenEdgeForChild) {
-            if (childrenEdgeForChild.destination.vertexName == 'home') {
-              queue.dequeue();
-              h = cost.getTimeConsume(childrenEdgeForChild, type);
-              while (true) {
-                h += cost.getTimeConsume(
-                    edge(childrenedge.destination,
-                        childrenedge.destination.parent!)!,
-                    type);
-                node = childrenedge.destination.parent!;
-                if (node == key) {
-                  vertixQueue.enqueue(h);
-                  break;
+        queue.enqueue(key);
+        while (!queue.isEmpty) {
+          Vertex node = queue.dequeue();
+          List<Edge> childrenEdges = edges.edges(node);
+          for (var childrenEdge in childrenEdges) {
+              childrenEdge.destination.parent = node;
+              queue.enqueue(childrenEdge.destination);
+              List<Edge> childrenEdgesForChild =
+                  edges.edges(childrenEdge.destination);
+              for (var childrenEdgeForChild in childrenEdgesForChild) {
+                  if (childrenEdgeForChild.destination.vertexName == 'home') {
+                    queue.dequeue();
+                    h = cost.getTimeConsume(childrenEdgeForChild, type);
+                    while (true) {
+                      h += cost.getTimeConsume(
+                          edge(childrenEdge.destination,
+                              childrenEdge.destination.parent!)!,
+                          type);
+                      node = childrenEdge.destination.parent!;
+                      if (node == key) {
+                        vertexQueue.enqueue(h);
+                        break;
+                      }
+                    }
+                  }
                 }
-              }
             }
-          });
-        });
-      }
-    });
+        }
+      },
+    );
   }
 
   Edge? edge(Vertex v1, Vertex v2) {
@@ -89,11 +91,11 @@ class Heuristics {
     RoadMap map = RoadMap();
     AdjacencyList a = map.getGraph();
     a.connections.forEach((key, value) {
-      value.forEach((element) {
+      for (var element in value) {
         if (element.source == v1 && element.destination == v2) {
           result = element;
         }
-      });
+      }
     });
     return result;
   }

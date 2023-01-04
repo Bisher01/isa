@@ -129,11 +129,8 @@ abstract class Graph {
   Vertex createVertex(
     String vertexName,
     double busWaitingTime,
-    double taxiWaitingTime, {
-    double currentHealth,
-    double currentMoney,
-    double consumedTime,
-  });
+    double taxiWaitingTime,
+  );
 
   void addEdge(
     Vertex source,
@@ -157,7 +154,19 @@ abstract class Graph {
 class AdjacencyList implements Graph {
   Map<Vertex, List<Edge>> connections;
   int nextIndex;
-  AdjacencyList({required this.connections, this.nextIndex = 0});
+  AdjacencyList({
+    required this.connections,
+    this.nextIndex = 0,
+  });
+
+
+  AdjacencyList copyWith({
+    Map<Vertex, List<Edge>>? connections,
+  }) {
+    return AdjacencyList(
+      connections: connections ?? this.connections,
+    );
+  }
 
   @override
   Iterable<Vertex> get vertices => connections.keys;
@@ -166,11 +175,8 @@ class AdjacencyList implements Graph {
   Vertex createVertex(
     String vertexName,
     double busWaitingTime,
-    double taxiWaitingTime, {
-    double currentHealth = 0,
-    double currentMoney = 0,
-    double consumedTime = 0,
-  }) {
+    double taxiWaitingTime,
+  ) {
     final vertex = Vertex(
       index: nextIndex,
       vertexName: vertexName,
