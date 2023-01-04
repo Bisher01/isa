@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:isa/data_structure/graph.dart';
 
+import 'map/map.dart';
+
 // you are idiot
 // and i will judge you
 class State {
   final int currentHealth;
   final int currentMoney;
+  final int consumedTime;
   List<String> path;
   final AdjacencyList graph;
   final List<Edge> availableMoves = [];
@@ -15,6 +18,7 @@ class State {
   State({
     required this.currentHealth,
     required this.currentMoney,
+    required this.consumedTime,
     required this.path,
     required this.graph,
     required this.currentVertex,
@@ -26,6 +30,7 @@ class State {
   State copyWith(
       {int? currentHealth,
       int? currentMoney,
+      int? consumedTime,
       List<String>? path,
       AdjacencyList? graph,
       List<Edge>? availableMoves,
@@ -34,6 +39,7 @@ class State {
     return State(
       currentHealth: currentHealth ?? this.currentHealth,
       currentMoney: currentMoney ?? this.currentMoney,
+      consumedTime: consumedTime ?? this.consumedTime,
       path: path ?? this.path,
       graph: graph ?? this.graph,
       currentVertex: currentVertex ?? this.currentVertex,
@@ -73,13 +79,13 @@ class State {
     // in seconds
     double timeConsume = 0;
     if (type == Transportation.walk) {
-      timeConsume = (edge.distance /edge.walkingSpeed) * 3600;
+      timeConsume = (edge.distance / edge.walkingSpeed) * 3600;
     } else if (type == Transportation.bus) {
       timeConsume =
-          edge.source.busWaitingTime +( (edge.distance / edge.busSpeed) * 3600);
+          edge.source.busWaitingTime + ((edge.distance / edge.busSpeed) * 3600);
     } else if (type == Transportation.taxi) {
-      timeConsume =
-          edge.source.taxiWaitingTime + ((edge.distance / edge.taxiSpeed) * 3600);
+      timeConsume = edge.source.taxiWaitingTime +
+          ((edge.distance / edge.taxiSpeed) * 3600);
     }
     return timeConsume;
   }
@@ -105,7 +111,8 @@ class State {
 
   List<Edge> checkMoves() {
     List<Edge> availableMoves = [];
-    List<Edge> moves = graph.edges(currentVertex); //collage //<Edge>[..]
+    List<Edge> moves =
+        RoadMap().graph.edges(currentVertex); //collage //<Edge>[..]
     for (Edge edge in moves) {
       if (edge.busStationName != null) {
         double health =
@@ -149,30 +156,28 @@ class State {
     double health = getHealthConsume(edge, edge.type);
     double money = getMoneyConsume(edge, edge.type);
     double time = getTimeConsume(edge, edge.type);
-    Edge newEdge = edge.copyWith(
-      destination: edge.destination.copyWith(
-        currentHealth: edge.destination.currentHealth - health,
-        currentMoney: edge.destination.currentMoney - money,
-        consumedTime: edge.destination.consumedTime + time,
-      ),
-    );
+    // Edge newEdge = edge.copyWith(
+    //   destination: edge.destination.copyWith(
+    //     currentHealth: currentHealth - health,
+    //     currentMoney: currentMoney - money,
+    //     consumedTime: consumedTime + time,
+    //   ),
+    // );
     graph.createVertex(
       edge.destination.vertexName,
       edge.destination.busWaitingTime,
       edge.destination.taxiWaitingTime,
-      currentHealth: newEdge.destination.currentHealth,
-      currentMoney: newEdge.destination.currentMoney,
-      consumedTime: newEdge.destination.consumedTime,
     );
-    graph.addEdge(
-      currentVertex,
-      newEdge.destination,
-      newEdge.distance,
-      newEdge.busSpeed,
-      newEdge.taxiSpeed,
-      newEdge.busStationName,
-      newEdge.type,
-    );
+    // graph.addEdge(
+    //   currentVertex,
+    //   newEdge.destination,
+    //   newEdge.distance,
+    //   newEdge.busSpeed,
+    //   newEdge.taxiSpeed,
+    //   newEdge.busStationName,
+    //   newEdge.type,
+    // );
+    // this.copyWith()
   }
   // A *
   // heuristics

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:isa/data_structure/graph.dart';
 import 'package:isa/data_structure/priority_queue.dart';
 import 'package:isa/data_structure/queue.dart';
@@ -7,9 +5,9 @@ import 'package:isa/map/map.dart';
 import 'package:isa/state.dart';
 
 class Heuristics {
-  
   final int currentHealth;
   final int currentMoney;
+  final int consumedTime;
   List<String> path;
   final AdjacencyList graph;
   final List<Edge> availableMoves = [];
@@ -17,24 +15,33 @@ class Heuristics {
   final Edge? previousEdge; //null
   Transportation type;
 
-  Heuristics(this.currentHealth, this.currentMoney, this.path, this.graph,
-      this.currentVertex, this.previousEdge, this.type);
+  Heuristics(
+    this.currentHealth,
+    this.currentMoney,
+    this.consumedTime,
+    this.path,
+    this.graph,
+    this.currentVertex,
+    this.previousEdge,
+    this.type,
+  );
 
   void mainfun() {
-  
     State cost = State(
-        currentHealth: currentHealth,
-        currentMoney: currentMoney,
-        path: path,
-        graph: graph,
-        currentVertex: currentVertex,
-        previousEdge: previousEdge);
-        
+      currentHealth: currentHealth,
+      currentMoney: currentMoney,
+      consumedTime: consumedTime,
+      path: path,
+      graph: graph,
+      currentVertex: currentVertex,
+      previousEdge: previousEdge,
+    );
+
     RoadMap map = RoadMap();
     double h = 0;
     AdjacencyList a = map.getGraph();
     AdjacencyList edges = AdjacencyList(connections: {});
-    QueueList queue = new QueueList();
+    QueueList queue = QueueList();
 
     a.connections.forEach((key, value) {
       PriorityQueue vertixQueue =

@@ -2,17 +2,13 @@
 // For full license & permission details, see LICENSE.
 
 class Vertex {
-   Vertex({
-    required this.index,
-    required this.vertexName,
-    required this.busWaitingTime,
-    required this.taxiWaitingTime,
-    this.currentHealth = 0,
-    this.currentMoney = 0,
-    this.consumedTime = 0,
-    this.parent 
-  });
-   Vertex? parent;
+  Vertex(
+      {required this.index,
+      required this.vertexName,
+      required this.busWaitingTime,
+      required this.taxiWaitingTime,
+      this.parent});
+  Vertex? parent;
   final int index;
   // if the vertexName== 'home' then
   // we have arrived at our destination
@@ -21,13 +17,9 @@ class Vertex {
   final double busWaitingTime;
   // in seconds
   final double taxiWaitingTime;
-  final double currentHealth;
-  final double currentMoney;
-  final double consumedTime;
 
   @override
-  String toString() =>
-      "$index $vertexName (Current Health: $currentHealth, Current Money: $currentMoney, Consumed Time: $consumedTime)";
+  String toString() => "$index $vertexName";
 
   String getPath() => "Station(num: $index, Station Name: $vertexName)";
 
@@ -42,18 +34,12 @@ class Vertex {
     final String? vertexName,
     final double? busWaitingTime,
     final double? taxiWaitingTime,
-    final double? currentHealth,
-    final double? currentMoney,
-    final double? consumedTime,
   }) {
     return Vertex(
       index: index ?? this.index,
       vertexName: vertexName ?? this.vertexName,
       busWaitingTime: busWaitingTime ?? this.busWaitingTime,
       taxiWaitingTime: taxiWaitingTime ?? this.taxiWaitingTime,
-      currentHealth: currentHealth ?? this.currentHealth,
-      currentMoney: currentMoney ?? this.currentMoney,
-      consumedTime: consumedTime ?? this.consumedTime,
     );
   }
 }
@@ -68,7 +54,6 @@ class Edge {
     required this.busStationName,
     required this.type,
   });
-  
 
   final Vertex source;
   final Vertex destination;
@@ -191,9 +176,6 @@ class AdjacencyList implements Graph {
       vertexName: vertexName,
       busWaitingTime: busWaitingTime,
       taxiWaitingTime: taxiWaitingTime,
-      currentHealth: currentHealth,
-      currentMoney: currentMoney,
-      consumedTime: consumedTime,
     );
     nextIndex++;
     connections[vertex] = [];
