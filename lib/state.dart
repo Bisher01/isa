@@ -133,15 +133,15 @@ class State {
     return availableMoves;
   }
 
-  List<State> getNextState() {
-    List<State> nextState = <State>[];
+  List<State> getNextStates() {
+    List<State> nextStates = <State>[];
     availableMoves.addAll(checkMoves());
     for (var edges in availableMoves) {
       State state = copyWith();
       state.move(edges);
-      nextState.add(state);
+      nextStates.add(state);
     }
-    return nextState;
+    return nextStates;
   }
 
   // source dest type

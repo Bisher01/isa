@@ -2,7 +2,7 @@
 // For full license & permission details, see LICENSE.
 
 class Vertex {
-  const Vertex({
+   Vertex({
     required this.index,
     required this.vertexName,
     required this.busWaitingTime,
@@ -10,8 +10,9 @@ class Vertex {
     this.currentHealth = 0,
     this.currentMoney = 0,
     this.consumedTime = 0,
+    this.parent 
   });
-
+   Vertex? parent;
   final int index;
   // if the vertexName== 'home' then
   // we have arrived at our destination

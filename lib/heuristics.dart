@@ -7,6 +7,7 @@ import 'package:isa/map/map.dart';
 import 'package:isa/state.dart';
 
 class heuristics {
+  
   final int currentHealth;
   final int currentMoney;
   List<String> path;
@@ -15,37 +16,12 @@ class heuristics {
   final Vertex currentVertex;
   final Edge? previousEdge; //null
   Transportation type;
+
   heuristics(this.currentHealth, this.currentMoney, this.path, this.graph,
       this.currentVertex, this.previousEdge, this.type);
+
   void mainfun() {
-    /**
-     * Map<String, String> ListFinalAllInfos = {'stackoverflow': 'one', 'google': 'two'};
-String key = ListFinalAllInfos.containsKey("stackoverflow"); // search for the key. for example stackoverflow
-String value = ListFinalAllInfos[key]; // get the value for the key, value will be 'one'
-if(ListFinalAllInfos.containsKey(value)){ //check if there is a key which is the value you grabbed
-  return true;
-}
-     */
-
-    /**
-     * import 'package:sortedmap/sortedmap.dart';
-
-main() {
-  var map = new SortedMap(Ordering.byValue());
   
-  map.addAll({
-    "a": 3,
-    "b": 2,
-    "c": 4,
-    "d": 1
-  });
-  
-  print(map.lastKeyBefore("c")); // a
-  print(map.firstKeyAfter("d")); // b
-  
-}
-     */
-
     State cost = State(
         currentHealth: currentHealth,
         currentMoney: currentMoney,
@@ -53,10 +29,12 @@ main() {
         graph: graph,
         currentVertex: currentVertex,
         previousEdge: previousEdge);
+        
     RoadMap map = RoadMap();
     double h = 0;
     AdjacencyList a = map.getGraph();
-            QueueList queue = new QueueList();
+    AdjacencyList edges = AdjacencyList(connections: {});
+    QueueList queue = new QueueList();
 
     a.connections.forEach((key, value) {
       PriorityQueue vertixQueue =
@@ -65,26 +43,51 @@ main() {
         if (element.destination.vertexName == 'home') {
           h = cost.getTimeConsume(element, type);
           vertixQueue.enqueue(h);
-          
         }
       });
-      
+
       queue.enqueue(key);
-      while(! queue.isEmpty) {
-        value = queue.dequeue();
-        value.forEach((element) {
-            queue.enqueue(element);
-            if (element.destination.vertexName == 'home') {
+      while (!queue.isEmpty) {
+        Vertex node = queue.dequeue();
+        List<Edge> childrenedges = edges.edges(node);
+        childrenedges.forEach((childrenedge) {
+          childrenedge.destination.parent = node;
+          queue.enqueue(childrenedge.destination);
+          List<Edge> childrenEdgesForChild =
+              edges.edges(childrenedge.destination);
+          childrenEdgesForChild.forEach((childrenEdgeForChild) {
+            if (childrenEdgeForChild.destination.vertexName == 'home') {
               queue.dequeue();
-              h = cost.getTimeConsume(element, type);
-              vertixQueue.enqueue(h);
-           }
-           while(true) {
-                h = h +  cost.getTimeConsume(element, type);
+              h = cost.getTimeConsume(childrenEdgeForChild, type);
+              while (true) {
+                h += cost.getTimeConsume(
+                    edge(childrenedge.destination,
+                        childrenedge.destination.parent!)!,
+                    type);
+                node = childrenedge.destination.parent!;
+                if (node == key) {
+                  vertixQueue.enqueue(h);
+                  break;
+                }
+              }
             }
+          });
         });
       }
-
     });
+  }
+
+  Edge? edge(Vertex v1, Vertex v2) {
+    Edge? result;
+    RoadMap map = RoadMap();
+    AdjacencyList a = map.getGraph();
+    a.connections.forEach((key, value) {
+      value.forEach((element) {
+        if (element.source == v1 && element.destination == v2) {
+          result = element;
+        }
+      });
+    });
+    return result;
   }
 }
