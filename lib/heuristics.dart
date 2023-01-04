@@ -6,7 +6,7 @@ import 'package:isa/data_structure/queue.dart';
 import 'package:isa/map/map.dart';
 import 'package:isa/state.dart';
 
-class heuristics {
+class Heuristics {
   
   final int currentHealth;
   final int currentMoney;
@@ -17,7 +17,7 @@ class heuristics {
   final Edge? previousEdge; //null
   Transportation type;
 
-  heuristics(this.currentHealth, this.currentMoney, this.path, this.graph,
+  Heuristics(this.currentHealth, this.currentMoney, this.path, this.graph,
       this.currentVertex, this.previousEdge, this.type);
 
   void mainfun() {

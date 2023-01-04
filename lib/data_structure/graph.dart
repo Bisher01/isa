@@ -34,9 +34,6 @@ class Vertex {
   bool isEqual(Vertex vertex) {
     return busWaitingTime == vertex.busWaitingTime &&
         taxiWaitingTime == vertex.taxiWaitingTime &&
-        currentHealth == vertex.currentHealth &&
-        currentMoney == vertex.currentMoney &&
-        consumedTime == vertex.consumedTime &&
         vertexName == vertex.vertexName;
   }
 
@@ -111,6 +108,30 @@ class Edge {
   String toString() {
     return 'Edge{source: $source, destination: $destination, distance: $distance, busSpeed: $busSpeed, taxiSpeed: $taxiSpeed, walkingSpeed: $walkingSpeed, busStationName: $busStationName, type: $type}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Edge &&
+          runtimeType == other.runtimeType &&
+          source == other.source &&
+          destination == other.destination &&
+          distance == other.distance &&
+          busSpeed == other.busSpeed &&
+          taxiSpeed == other.taxiSpeed &&
+          walkingSpeed == other.walkingSpeed &&
+          busStationName == other.busStationName;
+
+  @override
+  int get hashCode =>
+      source.hashCode ^
+      destination.hashCode ^
+      distance.hashCode ^
+      busSpeed.hashCode ^
+      taxiSpeed.hashCode ^
+      walkingSpeed.hashCode ^
+      busStationName.hashCode ^
+      type.hashCode;
 }
 
 enum EdgeType { directed, undirected }
