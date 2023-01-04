@@ -1,6 +1,8 @@
 // Copyright (c) 2022 Razeware LLC
 // For full license & permission details, see LICENSE.
 
+import 'dart:convert';
+
 class Vertex {
   Vertex(
       {required this.index,
@@ -159,12 +161,27 @@ class AdjacencyList implements Graph {
     this.nextIndex = 0,
   });
 
+  List<Edge> deepCopy(List<Edge> edges) {
+    List<Edge> newList = [];
+    for (var el in edges) {
+      newList.add(el);
+    }
+    return newList;
+  }
+
+  Map<Vertex, List<Edge>> deepCopyMap(Map<Vertex, List<Edge>> map) {
+    Map<Vertex, List<Edge>> newMap = {};
+    map.forEach((key, value) {
+      newMap.addAll({key: deepCopy(value)});
+    });
+    return newMap;
+  }
 
   AdjacencyList copyWith({
     Map<Vertex, List<Edge>>? connections,
   }) {
     return AdjacencyList(
-      connections: connections ?? this.connections,
+      connections: deepCopyMap(this.connections),
     );
   }
 

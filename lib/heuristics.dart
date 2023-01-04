@@ -57,6 +57,7 @@ class Heuristics {
         queue.enqueue(key);
         while (!queue.isEmpty) {
           Vertex node = queue.dequeue();
+          ///TODO: alissar {path.add(node.getPath()}
           List<Edge> childrenEdges = edges.edges(node);
           for (var childrenEdge in childrenEdges) {
               childrenEdge.destination.parent = node;

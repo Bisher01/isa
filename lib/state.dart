@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:isa/data_structure/graph.dart';
-import 'map/map.dart';
 
 // you are idiot
 // and i will judge you
@@ -10,17 +9,19 @@ class State {
    double consumedTime;
   List<String> path;
   final AdjacencyList graph;
+  final AdjacencyList? map;
   final List<Edge> availableMoves = [];
   Vertex currentVertex;
-  final Edge? previousEdge; //null
+   Edge? previousEdge; //null
   State({
     required this.currentHealth,
     required this.currentMoney,
     required this.consumedTime,
     required this.path,
     required this.graph,
+     this.map,
     required this.currentVertex,
-    required this.previousEdge,
+    this.previousEdge,
   });
 
   // graph.addEdge(source, destination, distance, busSpeed, taxiSpeed, busStationName, type);
@@ -40,6 +41,7 @@ class State {
       consumedTime: consumedTime ?? this.consumedTime,
       path: path ?? this.path,
       graph: graph ?? this.graph,
+      map: map,
       currentVertex: currentVertex ?? this.currentVertex,
       previousEdge: previousEdge ?? this.previousEdge,
     );
@@ -110,8 +112,7 @@ class State {
   List<Edge> checkMoves() {
     // ابن الحرام
     List<Edge> availableMoves = [];
-    List<Edge> moves =
-        RoadMap().graph.edges(currentVertex); //collage //<Edge>[..]
+    List<Edge> moves = map!.edges(currentVertex); //collage //<Edge>[..]
     for (Edge edge in moves) {
       // bus
       if (edge.busStationName != null) {
@@ -139,13 +140,22 @@ class State {
   }
 
   List<State> getNextStates() {
+    print('currentHealth= $currentHealth || currentMoney= $currentMoney');
+    print('before');
+    print(graph.toString());
+    print('==================');
     List<State> nextStates = <State>[];
     availableMoves.addAll(checkMoves());
+    print('available moves = ${availableMoves.length}');
     for (var edges in availableMoves) {
       State state = copyWith();
       state.move(edges);
+      print(state.graph.toString());
       nextStates.add(state);
     }
+    print('currentHealth= $currentHealth || currentMoney= $currentMoney');
+    print('after');
+    print(graph.toString());
     return nextStates;
   }
 
@@ -158,28 +168,22 @@ class State {
     currentMoney = currentMoney - money;
     consumedTime = consumedTime + time;
     currentVertex = edge.destination;
-    // Edge newEdge = edge.copyWith(
-    //   destination: edge.destination.copyWith(
-    //     currentHealth: currentHealth - health,
-    //     currentMoney: currentMoney - money,
-    //     consumedTime: consumedTime + time,
-    //   ),
-    // );
-    // graph.createVertex(
+    previousEdge = edge;
+    // AdjacencyList test = graph.copyWith();
+    // test.createVertex(
     //   edge.destination.vertexName,
     //   edge.destination.busWaitingTime,
     //   edge.destination.taxiWaitingTime,
     // );
-    // graph.addEdge(
+    // test.addEdge(
     //   currentVertex,
-    //   newEdge.destination,
-    //   newEdge.distance,
-    //   newEdge.busSpeed,
-    //   newEdge.taxiSpeed,
-    //   newEdge.busStationName,
-    //   newEdge.type,
+    //   edge.destination,
+    //   edge.distance,
+    //   edge.busSpeed,
+    //   edge.taxiSpeed,
+    //   edge.busStationName,
+    //   edge.type,
     // );
-    // this.copyWith()
   }
   // A *
   // heuristics
