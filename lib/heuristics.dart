@@ -65,11 +65,25 @@ main() {
         if (element.destination.vertexName == 'home') {
           h = cost.getTimeConsume(element, type);
           vertixQueue.enqueue(h);
+          
         }
       });
-
+      
       queue.enqueue(key);
-      while(q.)
+      while(! queue.isEmpty) {
+        value = queue.dequeue();
+        value.forEach((element) {
+            queue.enqueue(element);
+            if (element.destination.vertexName == 'home') {
+              queue.dequeue();
+              h = cost.getTimeConsume(element, type);
+              vertixQueue.enqueue(h);
+           }
+           while(true) {
+                h = h +  cost.getTimeConsume(element, type);
+            }
+        });
+      }
 
     });
   }

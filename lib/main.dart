@@ -5,8 +5,8 @@ import 'package:isa/map/map.dart';
 void main() {
   RoadMap roadMap = RoadMap();
   // roadMap.getGraph();
-  heuristics a = heuristics();
-  a.mainfun();
+  // heuristics a = heuristics();
+  // a.mainfun();
   runApp(const MyApp());
 }
 
