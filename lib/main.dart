@@ -21,8 +21,8 @@ void main() {
   );
   AdjacencyList graph = AdjacencyList(connections: {});
   stat.State state = stat.State(
-      currentHealth:100,
-      currentMoney: 10000,
+      currentHealth:0,
+      currentMoney: 0,
       consumedTime: 0,
       path: [],
       graph: graph,

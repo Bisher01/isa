@@ -17,6 +17,9 @@ class AStar {
     double weight = 0;
     double f_cost = 0;
     double w_cost = 0;
+    double time = 0;
+    double health = 0;
+    double money = 0;
 
     List<Edge> availableMove = state.checkMoves();
     for (Edge edge in availableMove) {
@@ -26,7 +29,10 @@ class AStar {
         w_cost = weight;
 
         for (Vertex vertex in $path) {
-          g_cost += state.getTimeConsume(edge, edge.type);
+          time += state.getTimeConsume(edge, edge.type);
+          money += state.getMoneyConsume(edge, edge.type);
+          health += state.getHealthConsume(edge, edge.type);
+          g_cost += (time + money + health)/3;
         }
       } else if (edge.type == Transportation.bus) {
         heuristics = Heuristics(state: state, type: Transportation.bus);
@@ -34,7 +40,10 @@ class AStar {
         w_cost = weight;
 
         for (Vertex vertex in $path) {
-          g_cost += state.getTimeConsume(edge, edge.type);
+          time += state.getTimeConsume(edge, edge.type);
+          money += state.getMoneyConsume(edge, edge.type);
+          health += state.getHealthConsume(edge, edge.type);
+          g_cost +=  (time + money + health)/3;
         }
       } else if (edge.type == Transportation.walk) {
         heuristics = Heuristics(state: state, type: Transportation.walk);
@@ -42,7 +51,10 @@ class AStar {
         w_cost = weight;
 
         for (Vertex vertex in $path) {
-          g_cost += state.getTimeConsume(edge, edge.type);
+          time += state.getTimeConsume(edge, edge.type);
+          money += state.getMoneyConsume(edge, edge.type);
+          health += state.getHealthConsume(edge, edge.type);
+          g_cost += (time + money + health)/3;
         }
       }
     }
