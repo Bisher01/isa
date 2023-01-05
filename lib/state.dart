@@ -110,7 +110,6 @@ class State {
   }
 
   List<Edge> checkMoves() {
-    // ابن الحرام
     List<Edge> availableMoves = [];
     List<Edge> moves = map!.edges(currentVertex); //collage //<Edge>[..]
     for (Edge edge in moves) {

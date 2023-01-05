@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:isa/data_structure/graph.dart';
 import 'package:isa/data_structure/priority_queue.dart';
 import 'package:isa/data_structure/queue.dart';
@@ -5,51 +7,28 @@ import 'package:isa/map/map.dart';
 import 'package:isa/state.dart';
 
 class Heuristics {
-  final double currentHealth;
-  final double currentMoney;
-  final double consumedTime;
-  List<String> path;
-  final AdjacencyList graph;
-  final List<Edge> availableMoves = [];
-  final Vertex currentVertex;
-  final Edge? previousEdge; //null
-  Transportation type;
+ State state;
+ Transportation type;
 
   Heuristics(
-    this.currentHealth,
-    this.currentMoney,
-    this.consumedTime,
-    this.path,
-    this.graph,
-    this.currentVertex,
-    this.previousEdge,
+    this.state,
     this.type,
   );
 
-  void mainFun() {
-    State cost = State(
-      currentHealth: currentHealth,
-      currentMoney: currentMoney,
-      consumedTime: consumedTime,
-      path: path,
-      graph: graph,
-      currentVertex: currentVertex,
-      previousEdge: previousEdge,
-    );
-
-    RoadMap map = RoadMap();
+  double mainFun() {
+   RoadMap map = RoadMap();
     double h = 0;
     AdjacencyList a = map.getGraph();
     AdjacencyList edges = AdjacencyList(connections: {});
     QueueList queue = QueueList();
+         PriorityQueue<double> vertexQueue =
+            PriorityQueue(elements: [], priority: Priority.min);
 
     a.connections.forEach(
       (key, value) {
-        PriorityQueue vertexQueue =
-            PriorityQueue(elements: [], priority: Priority.min);
         for (var element in value) {
           if (element.destination.vertexName == 'home') {
-            h = cost.getTimeConsume(element, type);
+            h = state.getTimeConsume(element, type);
             vertexQueue.enqueue(h);
           }
         }
@@ -67,9 +46,9 @@ class Heuristics {
               for (var childrenEdgeForChild in childrenEdgesForChild) {
                   if (childrenEdgeForChild.destination.vertexName == 'home') {
                     queue.dequeue();
-                    h = cost.getTimeConsume(childrenEdgeForChild, type);
+                    h = state.getTimeConsume(childrenEdgeForChild, type);
                     while (true) {
-                      h += cost.getTimeConsume(
+                      h += state.getTimeConsume(
                           edge(childrenEdge.destination,
                               childrenEdge.destination.parent!)!,
                           type);
@@ -85,6 +64,7 @@ class Heuristics {
         }
       },
     );
+   return vertexQueue.dequeue()!;
   }
 
   Edge? edge(Vertex v1, Vertex v2) {
