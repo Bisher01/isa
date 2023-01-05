@@ -27,15 +27,16 @@ class State {
 
   // graph.addEdge(source, destination, distance, busSpeed, taxiSpeed, busStationName, type);
   // graph.createVertex(vertexName, busWaitingTime, taxiWaitingTime, currentHealth, currentMoney, consumedTime);
-  State copyWith(
-      {double? currentHealth,
-      double? currentMoney,
-      double? consumedTime,
-      List<String>? path,
-      AdjacencyList? graph,
-      List<Edge>? availableMoves,
-      Vertex? currentVertex,
-      Edge? previousEdge}) {
+  State copyWith({
+    double? currentHealth,
+    double? currentMoney,
+    double? consumedTime,
+    List<String>? path,
+    AdjacencyList? graph,
+    List<Edge>? availableMoves,
+    Vertex? currentVertex,
+    Edge? previousEdge,
+  }) {
     return State(
       currentHealth: currentHealth ?? this.currentHealth,
       currentMoney: currentMoney ?? this.currentMoney,
@@ -100,12 +101,12 @@ class State {
 
   void printState() {
     //print the structure attributes values
-    stdout.write("path: ");
+    print("path: ");
     for (var element in path) {
       if (element == path.last) {
-        stdout.write("$element\n");
+        print("$element - ${previousEdge?.type.name} ${currentHealth}\n");
       } else {
-        stdout.write("$element -> ");
+        print("$element - ${previousEdge?.type.name} ${currentHealth} -> ");
       }
     }
   }
@@ -143,22 +144,24 @@ class State {
   }
 
   List<State> getNextStates() {
-    print('currentHealth= $currentHealth || currentMoney= $currentMoney');
-    print('before');
-    print(graph.toString());
-    print('==================');
     List<State> nextStates = <State>[];
     availableMoves.addAll(checkMoves());
-    print('available moves = ${availableMoves.length}');
+    // print('before');
+    // print(previousEdge);
+    // print(currentHealth);
     for (var edges in availableMoves) {
       State state = copyWith();
       state.move(edges);
-      print(state.graph.toString());
+      // print('in');
+
+      // print(state.previousEdge);
+      // print(state.currentHealth);
       nextStates.add(state);
     }
-    print('currentHealth= $currentHealth || currentMoney= $currentMoney');
-    print('after');
-    print(graph.toString());
+    // print('after');
+
+    // print(previousEdge);
+    // print(currentHealth);
     return nextStates;
   }
 
@@ -171,7 +174,15 @@ class State {
     currentMoney = currentMoney - money;
     consumedTime = consumedTime + time;
     currentVertex = edge.destination;
-    previousEdge = edge;
+    previousEdge = previousEdge?.copyWith(
+      busSpeed: edge.busSpeed,
+      source: edge.source,
+      destination: edge.destination,
+      distance: edge.distance,
+      taxiSpeed: edge.taxiSpeed,
+      busStationName: edge.busStationName,
+      type: edge.type,
+    );
     // AdjacencyList test = graph.copyWith();
     // test.createVertex(
     //   edge.destination.vertexName,

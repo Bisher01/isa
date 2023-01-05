@@ -20,7 +20,7 @@ class Heuristics {
     AdjacencyList edges = AdjacencyList(connections: {});
     QueueList queue = QueueList();
     PriorityQueue<double> vertexQueue =
-        PriorityQueue(elements: [], priority: Priority.min);
+        PriorityQueue(elements: [], priority: Priority.max);
 
     a.connections.forEach(
       (key, value) {
@@ -35,7 +35,6 @@ class Heuristics {
         while (!queue.isEmpty) {
           Vertex node = queue.dequeue();
 
-          ///TODO: alissar {path.add(node.getPath()}
           List<Edge> childrenEdges = edges.edges(node);
           for (var childrenEdge in childrenEdges) {
             childrenEdge.destination.parent = node;

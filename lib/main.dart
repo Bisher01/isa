@@ -8,22 +8,34 @@ import 'aStar.dart';
 
 void main() {
   RoadMap roadMap = RoadMap();
+
   AdjacencyList map = roadMap.getGraph();
+  Edge empty = Edge(
+    source: roadMap.college!,
+    destination: roadMap.college!,
+    distance: 0,
+    busSpeed: 0,
+    taxiSpeed: 0,
+    busStationName: 'college',
+    type: Transportation.none,
+  );
   AdjacencyList graph = AdjacencyList(connections: {});
   stat.State state = stat.State(
-    currentHealth: 100,
-    currentMoney: 1000,
-    consumedTime: 0,
-    path: [],
-    graph: graph,
-    currentVertex: roadMap.college!,
-    map: map,
-  );
+      currentHealth: 100,
+      currentMoney: 1000,
+      consumedTime: 0,
+      path: [],
+      graph: graph,
+      currentVertex: roadMap.college!,
+      map: map,
+      previousEdge: empty);
+  // state.getNextStates();
   Heuristics heuristics = Heuristics();
   AStar aStar = AStar(state: state, heuristics: heuristics);
   List<Vertex> start = [];
   start.add(state.currentVertex);
-  aStar.algorithm(start, roadMap.home!);
+  aStar.algorithm(start, roadMap.home!).printState();
+  state.printState();
   runApp(const MyApp());
 }
 

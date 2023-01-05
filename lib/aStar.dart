@@ -50,7 +50,7 @@ class AStar {
     return f_cost;
   }
 
-  void algorithm(List<Vertex> start, Vertex end) {
+  State algorithm(List<Vertex> start, Vertex end) {
     // ignore: prefer_function_declarations_over_variables
     Comparator<List<Vertex>> comparator =
         ($v1, $v2) => pathWeight($v1).compareTo(pathWeight($v2));
@@ -66,16 +66,20 @@ class AStar {
       List<Vertex>? path = priorityQueue.deQueue();
 
       Vertex? node = path?.last;
+      state.path.add(node!.getPath());
 
       if (visited.contains(node)) continue;
       visited.add(node!);
 
       if (state.isFinal(node)) {
-        return;
+        print('state is');
+        print(state.currentVertex);
+        return state;
       } else {
         List<State> adjacent = state.getNextStates();
-
         for (State node2 in adjacent) {
+          print('adjacent');
+          print(node2.currentHealth);
           Vertex node3 = node2.currentVertex;
           List<Vertex> new_path = List.from(path!);
 
@@ -85,6 +89,7 @@ class AStar {
         }
       }
     }
-    return;
+
+    return state;
   }
 }
