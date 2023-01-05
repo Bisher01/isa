@@ -64,29 +64,27 @@ class AStar {
     while (priorityQueue.isNotEmpty) {
       priorityQueue.sort();
       List<Vertex>? path = priorityQueue.deQueue();
-
       Vertex? node = path?.last;
-      state.path.add(node!.getPath());
+
+      if (state.isFinal()) {
+        print('state is');
+        print(state);
+        return state;
+      }
 
       if (visited.contains(node)) continue;
-      visited.add(node!);
+      state.path.add('${node!.getPath()} - ${state}');
 
-      if (state.isFinal(node)) {
-        print('state is');
-        print(state.currentVertex);
-        return state;
-      } else {
-        List<State> adjacent = state.getNextStates();
-        for (State node2 in adjacent) {
-          print('adjacent');
-          print(node2.currentHealth);
-          Vertex node3 = node2.currentVertex;
-          List<Vertex> new_path = List.from(path!);
+      visited.add(node);
 
-          new_path.add(node3);
+      List<State> adjacent = state.getNextStates();
+      for (State node2 in adjacent) {
+        state = node2.copyWith();
+        List<Vertex> new_path = List.from(path!);
 
-          priorityQueue.enQueue(new_path);
-        }
+        new_path.add(state.currentVertex);
+
+        priorityQueue.enQueue(new_path);
       }
     }
 

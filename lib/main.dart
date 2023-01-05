@@ -21,8 +21,8 @@ void main() {
   );
   AdjacencyList graph = AdjacencyList(connections: {});
   stat.State state = stat.State(
-      currentHealth: 100,
-      currentMoney: 1000,
+      currentHealth:100,
+      currentMoney: 10000,
       consumedTime: 0,
       path: [],
       graph: graph,
@@ -35,7 +35,6 @@ void main() {
   List<Vertex> start = [];
   start.add(state.currentVertex);
   aStar.algorithm(start, roadMap.home!).printState();
-  state.printState();
   runApp(const MyApp());
 }
 

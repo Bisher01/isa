@@ -92,11 +92,16 @@ class State {
     return timeConsume;
   }
 
-  bool isFinal(Vertex vertex) {
-    if (vertex.vertexName == 'home') {
+  bool isFinal() {
+    if (currentVertex.vertexName == 'home') {
       return true;
     }
     return false;
+  }
+
+  @override
+  String toString() {
+    return 'State{currentHealth: $currentHealth, currentMoney: $currentMoney, consumedTime: $consumedTime, currentVertex: $currentVertex, type: ${previousEdge?.type}} }';
   }
 
   void printState() {
@@ -104,9 +109,9 @@ class State {
     print("path: ");
     for (var element in path) {
       if (element == path.last) {
-        print("$element - ${previousEdge?.type.name} ${currentHealth}\n");
+        print("$element\n");
       } else {
-        print("$element - ${previousEdge?.type.name} ${currentHealth} -> ");
+        print("$element -> ");
       }
     }
   }
@@ -115,29 +120,33 @@ class State {
     List<Edge> availableMoves = [];
     List<Edge> moves = map!.edges(currentVertex); //collage //<Edge>[..]
     for (Edge edge in moves) {
-      // bus
-      if (edge.busStationName != null) {
+      if (edge != previousEdge) {
         double health =
-            currentHealth - getHealthConsume(edge, Transportation.bus);
-        double money = currentMoney - getMoneyConsume(edge, Transportation.bus);
-        if (money > 0 && health > 0) {
-          availableMoves.add(edge.copyWith(type: Transportation.bus));
+            currentHealth - getHealthConsume(edge, Transportation.walk);
+        if (health > 0) {
+          availableMoves.add(edge.copyWith(type: Transportation.walk));
         }
-      }
-      // taxi
-      if (edge.busStationName != null) {
-        double health =
-            currentHealth - getHealthConsume(edge, Transportation.taxi);
-        double money =
-            currentMoney - getMoneyConsume(edge, Transportation.taxi);
-        if (money > 0 && health > 0) {
-          availableMoves.add(edge.copyWith(type: Transportation.taxi));
+
+        // bus
+        if (edge.busStationName != null) {
+          double health =
+              currentHealth - getHealthConsume(edge, Transportation.bus);
+          double money =
+              currentMoney - getMoneyConsume(edge, Transportation.bus);
+          if (money > 0 && health > 0) {
+            availableMoves.add(edge.copyWith(type: Transportation.bus));
+          }
         }
-      }
-      double health =
-          currentHealth - getHealthConsume(edge, Transportation.walk);
-      if (health > 0) {
-        availableMoves.add(edge.copyWith(type: Transportation.walk));
+        // taxi
+        if (edge.busStationName != null) {
+          double health =
+              currentHealth - getHealthConsume(edge, Transportation.taxi);
+          double money =
+              currentMoney - getMoneyConsume(edge, Transportation.taxi);
+          if (money > 0 && health > 0) {
+            availableMoves.add(edge.copyWith(type: Transportation.taxi));
+          }
+        }
       }
     }
     return availableMoves;
@@ -146,22 +155,11 @@ class State {
   List<State> getNextStates() {
     List<State> nextStates = <State>[];
     availableMoves.addAll(checkMoves());
-    // print('before');
-    // print(previousEdge);
-    // print(currentHealth);
     for (var edges in availableMoves) {
       State state = copyWith();
       state.move(edges);
-      // print('in');
-
-      // print(state.previousEdge);
-      // print(state.currentHealth);
       nextStates.add(state);
     }
-    // print('after');
-
-    // print(previousEdge);
-    // print(currentHealth);
     return nextStates;
   }
 
