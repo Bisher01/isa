@@ -21,7 +21,7 @@ class AStar {
     List<Edge> availableMove = state.checkMoves();
     for (Edge edge in availableMove) {
       if (edge.type == Transportation.taxi) {
-        heuristics = Heuristics(state, Transportation.taxi);
+        heuristics = Heuristics(state: state, type: Transportation.taxi);
         weight = heuristics.mainFun();
         w_cost = weight;
 
@@ -29,7 +29,7 @@ class AStar {
           g_cost += state.getTimeConsume(edge, edge.type);
         }
       } else if (edge.type == Transportation.bus) {
-        heuristics = Heuristics(state, Transportation.bus);
+        heuristics = Heuristics(state: state, type: Transportation.bus);
         weight = heuristics.mainFun();
         w_cost = weight;
 
@@ -37,7 +37,7 @@ class AStar {
           g_cost += state.getTimeConsume(edge, edge.type);
         }
       } else if (edge.type == Transportation.walk) {
-        heuristics = Heuristics(state, Transportation.walk);
+        heuristics = Heuristics(state: state, type: Transportation.walk);
         weight = heuristics.mainFun();
         w_cost = weight;
 

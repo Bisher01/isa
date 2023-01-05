@@ -1,25 +1,26 @@
 import 'dart:io';
+
 import 'package:isa/data_structure/graph.dart';
 
 // you are idiot
 // and i will judge you
 class State {
-   double currentHealth;
-   double currentMoney;
-   double consumedTime;
+  double currentHealth;
+  double currentMoney;
+  double consumedTime;
   List<String> path;
   final AdjacencyList graph;
   final AdjacencyList? map;
   final List<Edge> availableMoves = [];
   Vertex currentVertex;
-   Edge? previousEdge; //null
+  Edge? previousEdge; //null
   State({
     required this.currentHealth,
     required this.currentMoney,
     required this.consumedTime,
     required this.path,
     required this.graph,
-     this.map,
+    this.map,
     required this.currentVertex,
     this.previousEdge,
   });
@@ -115,7 +116,8 @@ class State {
     for (Edge edge in moves) {
       // bus
       if (edge.busStationName != null) {
-        double health = currentHealth - getHealthConsume(edge, Transportation.bus);
+        double health =
+            currentHealth - getHealthConsume(edge, Transportation.bus);
         double money = currentMoney - getMoneyConsume(edge, Transportation.bus);
         if (money > 0 && health > 0) {
           availableMoves.add(edge.copyWith(type: Transportation.bus));
@@ -123,8 +125,10 @@ class State {
       }
       // taxi
       if (edge.busStationName != null) {
-        double health = currentHealth - getHealthConsume(edge, Transportation.taxi);
-        double money  = currentMoney  - getMoneyConsume (edge, Transportation.taxi);
+        double health =
+            currentHealth - getHealthConsume(edge, Transportation.taxi);
+        double money =
+            currentMoney - getMoneyConsume(edge, Transportation.taxi);
         if (money > 0 && health > 0) {
           availableMoves.add(edge.copyWith(type: Transportation.taxi));
         }
@@ -184,6 +188,6 @@ class State {
     //   edge.type,
     // );
   }
-  // A *
-  // heuristics
+// A *
+// heuristics
 }
